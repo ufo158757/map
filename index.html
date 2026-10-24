@@ -38,14 +38,7 @@
         <p>旧世纪的海滨城市在异常潮汐后复苏，山雾、废港与旧城区一同醒来。</p>
       </section>
 
-      <section class="search-block" aria-label="地点搜索">
-        <label class="search-field" for="placeSearch">
-          <svg class="icon"><use href="#i-search"></use></svg>
-          <input id="placeSearch" type="search" autocomplete="off" placeholder="搜寻一处地点" aria-controls="searchResults" aria-expanded="false" />
-          <kbd>55</kbd>
-        </label>
-        <div class="search-results" id="searchResults" role="listbox" hidden></div>
-      </section>
+      
 
       <section class="region-section">
         <div class="section-heading"><span>地区索引</span><span>04 境</span></div>
@@ -55,6 +48,15 @@
           <button class="region-row" data-region="jinsha" type="button"><span class="region-row__index">03</span><span class="region-row__body"><span class="region-row__title">金沙 <small>JINSHA</small></span><span class="region-row__meta">港口 · 商贸 · 海岸 <b>12</b></span></span><span class="region-row__swatch"></span></button>
           <button class="region-row" data-region="mingxi" type="button"><span class="region-row__index">04</span><span class="region-row__body"><span class="region-row__title">鸣汐 <small>MINGXI</small></span><span class="region-row__meta">边海 · 工业 · 禁区 <b>12</b></span></span><span class="region-row__swatch"></span></button>
         </nav>
+      </section>
+
+        <section class="search-block" aria-label="地点搜索">
+        <label class="search-field" for="placeSearch">
+          <svg class="icon"><use href="#i-search"></use></svg>
+          <input id="placeSearch" type="search" autocomplete="off" placeholder="搜寻一处地点" aria-controls="searchResults" aria-expanded="false" />
+          <kbd>55</kbd>
+        </label>
+        <div class="search-results" id="searchResults" role="listbox" hidden></div>
       </section>
 
       <footer class="sidebar-footer">
@@ -250,7 +252,15 @@
           <div class="map-topbar__actions"><button class="top-action" id="labelsToggle" type="button" aria-pressed="false" title="清除地区测距"><svg class="icon"><use href="#i-compass"></use></svg><span>重置</span></button><button class="top-action" id="resetView" type="button" title="查看全图"><svg class="icon"><use href="#i-maximize"></use></svg><span>全域</span></button></div>
         </header>
         <div class="map-controls" aria-label="地图缩放控制"><button class="map-control" id="zoomIn" type="button" title="放大"><svg class="icon"><use href="#i-plus"></use></svg></button><button class="map-control" id="zoomOut" type="button" title="缩小"><svg class="icon"><use href="#i-minus"></use></svg></button><span class="control-rule"></span><button class="map-control" id="compassReset" type="button" title="回到澜城"><svg class="icon"><use href="#i-compass"></use></svg></button></div>
-        <div class="map-readout"><span>潮位 <b>+2.4m</b></span><i></i><span>海雾 <b>重</b></span><i></i><span id="mapCoordinate">08°41′N · 17°12′E</span></div>
+        <button class="map-compass" id="mapCompass" type="button" title="正北向上" aria-label="罗盘指南针，正北向上">
+            <span class="map-compass__dial" aria-hidden="true">
+              <i class="map-compass__north"></i><i class="map-compass__east"></i><i class="map-compass__south"></i><i class="map-compass__west"></i>
+              <b>N</b><em>E</em><em>S</em><em>W</em>
+              <svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="31"></circle><path d="M40 13 47 39 40 35 33 39Z" class="needle-a"></path><path d="M40 67 33 41 40 45 47 41Z" class="needle-b"></path></svg>
+            </span>
+            <span class="map-compass__label">正北</span>
+          </button>
+          <div class="map-readout"><span>潮位 <b>+2.4m</b></span><i></i><span>海雾 <b>重</b></span><i></i><span id="mapCoordinate">08°41′N · 17°12′E</span></div>
       </div>
     </main>
   </div>

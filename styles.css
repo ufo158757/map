@@ -316,6 +316,31 @@ button { -webkit-tap-highlight-color: transparent; }
 .tree-detail { opacity: .7; }
 .tree-detail use { transform-box: fill-box; transform-origin: center; }
 .ruin-art path { filter: drop-shadow(0 1px 2px rgba(28,43,35,.14)); }
+.poi.is-landmark .poi__pin { width: 26px; height: 26px; border-width: 2px; border-color: #fff1c6; border-radius: 4px; background: color-mix(in srgb,var(--poi-color),#f3dfae 16%); box-shadow: 0 3px 9px rgba(11,34,32,.4),0 0 0 4px color-mix(in srgb,var(--poi-color),transparent 60%); }
+.poi.is-landmark .poi__pin::after { width: 8px; height: 8px; border-radius: 2px; background: #fff2cc; box-shadow: inset 0 0 0 1px rgba(38,57,48,.2); }
+.poi.is-landmark .poi__label { font-family: "STSong","Songti SC","SimSun",serif; font-weight: 700; }
+.poi.is-spawn { z-index: 27; }
+.poi.is-spawn .poi__pin { width: 31px; height: 31px; border-color: #ffe9ad; border-radius: 50%; background: #ba624e; box-shadow: 0 3px 12px rgba(31,30,24,.48),0 0 0 5px rgba(196,101,75,.22); transform: rotate(0); animation: spawn-pulse 2200ms ease-in-out infinite; }
+.poi.is-spawn .poi__pin::after { width: auto; height: auto; content: "✚"; color: #fff0c5; font-size: 16px; font-weight: 700; line-height: 1; background: transparent; box-shadow: none; }
+.poi.is-spawn:hover .poi__pin { transform: rotate(0) scale(1.12); }
+.poi.is-spawn .poi__label { opacity: 1; transform: translateY(0); color: #f9edcf; border-color: rgba(249,232,192,.32); background: rgba(83,54,45,.92); }
+.poi__spawn-badge { position: absolute; top: -25px; left: 50%; padding: 3px 7px; color: #553c32; font-size: 8px; font-weight: 700; white-space: nowrap; border: 1px solid rgba(255,237,192,.8); border-radius: 999px; background: #f4dca4; box-shadow: 0 2px 7px rgba(30,31,25,.24); transform: translateX(-50%); }
+@keyframes spawn-pulse { 0%,100% { box-shadow: 0 3px 12px rgba(31,30,24,.48),0 0 0 4px rgba(196,101,75,.2); } 50% { box-shadow: 0 3px 12px rgba(31,30,24,.48),0 0 0 9px rgba(196,101,75,0); } }
+.map-compass { position: absolute; z-index: 21; left: 25px; bottom: 55px; display: flex; width: 82px; align-items: center; flex-direction: column; gap: 5px; padding: 0; color: #f3e7cb; border: 0; background: transparent; cursor: pointer; }
+.map-compass__dial { position: relative; display: grid; width: 76px; height: 76px; place-items: center; border: 1px solid rgba(241,230,203,.28); border-radius: 50%; background: radial-gradient(circle,rgba(27,64,61,.56),rgba(13,43,43,.78)); box-shadow: 0 9px 26px rgba(5,24,26,.25),inset 0 0 0 5px rgba(241,228,197,.035); backdrop-filter: blur(9px); }
+.map-compass__dial::before,.map-compass__dial::after { position: absolute; content: ""; background: rgba(241,230,203,.18); }
+.map-compass__dial::before { width: 1px; height: 65px; }
+.map-compass__dial::after { width: 65px; height: 1px; }
+.map-compass svg { position: relative; z-index: 1; width: 66px; height: 66px; overflow: visible; }
+.map-compass svg circle { fill: none; stroke: rgba(241,230,203,.18); stroke-width: 1; stroke-dasharray: 2 4; }
+.map-compass .needle-a { fill: #c66e53; }
+.map-compass .needle-b { fill: #a7c8bd; opacity: .62; }
+.map-compass__dial b,.map-compass__dial em { position: absolute; z-index: 2; font-family: Georgia,serif; font-size: 8px; font-style: normal; font-weight: 400; color: rgba(247,235,207,.64); }
+.map-compass__dial b { top: 4px; left: 50%; color: #f4dfb1; transform: translateX(-50%); }
+.map-compass__dial em:nth-of-type(1) { right: 5px; top: 50%; transform: translateY(-50%); }.map-compass__dial em:nth-of-type(2) { bottom: 4px; left: 50%; transform: translateX(-50%); }.map-compass__dial em:nth-of-type(3) { left: 5px; top: 50%; transform: translateY(-50%); }
+.map-compass__label { color: rgba(241,232,211,.52); font-size: 8px; }
+.map-compass:hover .map-compass__dial { border-color: rgba(245,220,164,.5); }
+.map-compass:hover .map-compass__label { color: #f2e2bf; }
 @media (max-width:1100px) {
   .app-shell { grid-template-columns: 285px minmax(0,1fr); }
   .sidebar { padding-right: 20px; padding-left: 20px; }
@@ -333,7 +358,8 @@ button { -webkit-tap-highlight-color: transparent; }
   .intro,.sidebar-footer { display: none; }
   .search-block { margin: 12px 0 10px; }
   .search-field { height: 38px; }
-  .region-section { margin: 0 -16px; overflow-x: auto; scrollbar-width: none; }
+  .region-section + .search-block { margin-top: 16px; }
+.region-section { margin: 0 -16px; overflow-x: auto; scrollbar-width: none; }
   .region-section::-webkit-scrollbar { display: none; }
   .section-heading { display: none; }
   .region-list { display: flex; width: max-content; flex-direction: row; gap: 7px; padding: 0 16px 1px; }
