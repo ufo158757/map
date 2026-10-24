@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="澜海湾四境交互地图，可点击查看青岚、澜城、金沙与鸣汐的全部地点。" />
+  <title>澜海湾 · 四境潮图</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <svg class="icon-sprite" aria-hidden="true"><defs>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4.2-4.2"></path></symbol>
+    <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="m16 8-2.3 5.7L8 16l2.3-5.7L16 8Z"></path></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"></path></symbol>
+    <symbol id="i-maximize" viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M21 16v5h-5"></path></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z"></path><path d="m3 12 9 5 9-5M3 16l9 5 9-5"></path></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"></path></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></symbol>
+    <symbol id="i-note" viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"></path><path d="M2 6h4M2 10h4M2 14h4M2 18h4"></path><path d="m18.5 2.5 3 3L13 14l-4 1 1-4 8.5-8.5Z"></path></symbol>
+  <clipPath id="clip-qinglan"><path d="M100 165C235 68 456 58 646 131C741 170 800 241 810 342L774 465C712 553 612 610 496 632C369 653 246 617 167 538C91 462 65 360 76 260Z"></path></clipPath>
+              <clipPath id="clip-lanzhou"><path d="M780 250C900 150 1080 150 1220 208L1328 294L1450 475C1380 545 1290 575 1210 573C1125 585 1070 620 1040 665L980 670C915 610 870 535 832 460L770 360Z"></path></clipPath>
+              <clipPath id="clip-jinsha"><path d="M1012 675C1072 678 1128 711 1166 748C1211 786 1280 812 1340 859C1404 908 1424 968 1388 1014C1328 1050 1214 1042 1110 1016C988 985 889 916 834 833C790 766 806 691 858 663C902 639 956 657 1012 675Z"></path></clipPath>
+              <clipPath id="clip-mingxi"><path d="M1310 210C1430 180 1570 225 1640 320L1690 402L1640 465C1550 453 1480 420 1435 365L1348 287Z"></path></clipPath>
+            </defs></svg>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <header class="brand">
+        <div class="brand__mark" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div><div class="brand__eyebrow">LANHAI BAY · 复苏纪</div><h1>澜海湾</h1></div>
+        <span class="live-pill"><i></i> 全域</span>
+      </header>
+
+      <section class="intro">
+        <div class="intro__kicker">旧世纪海滨 / 诡异复苏后</div>
+        <h2>潮水退去，<br />旧城仍在呼吸。</h2>
+        <p>旧世纪的海滨城市在异常潮汐后复苏，山雾、废港与旧城区一同醒来。</p>
+      </section>
+
+      <section class="search-block" aria-label="地点搜索">
+        <label class="search-field" for="placeSearch">
+          <svg class="icon"><use href="#i-search"></use></svg>
+          <input id="placeSearch" type="search" autocomplete="off" placeholder="搜寻一处地点" aria-controls="searchResults" aria-expanded="false" />
+          <kbd>55</kbd>
+        </label>
+        <div class="search-results" id="searchResults" role="listbox" hidden></div>
+      </section>
+
+      <section class="region-section">
+        <div class="section-heading"><span>地区索引</span><span>04 境</span></div>
+        <nav class="region-list" id="regionList" aria-label="澜海湾地区">
+          <button class="region-row" data-region="qinglan" type="button"><span class="region-row__index">01</span><span class="region-row__body"><span class="region-row__title">青岚 <small>QINGLAN</small></span><span class="region-row__meta">山林 · 研究 · 疗养 <b>13</b></span></span><span class="region-row__swatch"></span></button>
+          <button class="region-row" data-region="lanzhou" type="button"><span class="region-row__index">02</span><span class="region-row__body"><span class="region-row__title">澜城 <small>LANZHOU</small></span><span class="region-row__meta">城邦 · 政务 · 航运 <b>18</b></span></span><span class="region-row__swatch"></span></button>
+          <button class="region-row" data-region="jinsha" type="button"><span class="region-row__index">03</span><span class="region-row__body"><span class="region-row__title">金沙 <small>JINSHA</small></span><span class="region-row__meta">港口 · 商贸 · 海岸 <b>12</b></span></span><span class="region-row__swatch"></span></button>
+          <button class="region-row" data-region="mingxi" type="button"><span class="region-row__index">04</span><span class="region-row__body"><span class="region-row__title">鸣汐 <small>MINGXI</small></span><span class="region-row__meta">边海 · 工业 · 禁区 <b>12</b></span></span><span class="region-row__swatch"></span></button>
+        </nav>
+      </section>
+
+      <footer class="sidebar-footer">
+        <div class="legend"><span><i class="legend-dot legend-dot--open"></i>公共区域</span><span><i class="legend-dot legend-dot--limited"></i>受限区域</span><span><i class="legend-dot legend-dot--hazard"></i>危险区域</span></div>
+        <div class="edition"><span>澜海地理署编制</span><span>图版 07</span></div>
+      </footer>
+    </aside>
+
+    <main class="map-area">
+      <div class="map-viewport" id="mapViewport">
+        <div class="map-atmosphere" aria-hidden="true"></div>
+        <div class="map-world" id="mapWorld">
+          <svg class="bay-map" viewBox="0 0 1700 1100" role="img" aria-label="澜海湾四境与凹形海湾地图" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="seaGradient" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3b7c7d"></stop><stop offset=".5" stop-color="#285f67"></stop><stop offset="1" stop-color="#173f4d"></stop></linearGradient>
+              <linearGradient id="landWash" x1="0" y1="0" x2=".9" y2="1"><stop offset="0" stop-color="#d5ceb0"></stop><stop offset=".55" stop-color="#bbb99a"></stop><stop offset="1" stop-color="#969f83"></stop></linearGradient>
+              <linearGradient id="qinglanWash" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#91a478"></stop><stop offset="1" stop-color="#687e5f"></stop></linearGradient>
+              <linearGradient id="lanzhouWash" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d79972"></stop><stop offset="1" stop-color="#b96851"></stop></linearGradient>
+              <linearGradient id="jinshaWash" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d9b86d"></stop><stop offset="1" stop-color="#c68c49"></stop></linearGradient>
+              <linearGradient id="mingxiWash" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#78a2a1"></stop><stop offset="1" stop-color="#42777e"></stop></linearGradient>
+              <linearGradient id="bayShallow" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#63a2a1" stop-opacity=".16"></stop><stop offset=".5" stop-color="#367b81" stop-opacity=".72"></stop><stop offset="1" stop-color="#1c5260" stop-opacity=".92"></stop></linearGradient>
+              <linearGradient id="fogMilk" x1="0" y1="0" x2="1" y2=".7"><stop offset="0" stop-color="#dbe5e0" stop-opacity=".1"></stop><stop offset=".5" stop-color="#edf1eb" stop-opacity=".76"></stop><stop offset="1" stop-color="#b9d1cc" stop-opacity=".08"></stop></linearGradient>
+              <filter id="softShadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#082c31" flood-opacity=".3"></feDropShadow></filter>
+              <filter id="fogBlur" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="22"></feGaussianBlur></filter>
+              <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".74" numOctaves="2" seed="11" result="n"></feTurbulence><feColorMatrix in="n" type="saturate" values="0" result="m"></feColorMatrix><feComponentTransfer in="m"><feFuncA type="table" tableValues="0 .04"></feFuncA></feComponentTransfer></filter>
+              <pattern id="forestHatch" width="17" height="17" patternUnits="userSpaceOnUse"><path d="M2 15 8 5l6 10M7 16l6-9 5 9" fill="none" stroke="#344f40" stroke-width="1.1" opacity=".34"></path></pattern>
+              <pattern id="cityHatch" width="21" height="21" patternUnits="userSpaceOnUse"><path d="M2 2h17v17H2z" fill="none" stroke="#783f38" stroke-width=".75" opacity=".18"></path><path d="M6 5v12M15 3v15" stroke="#783f38" stroke-width=".65" opacity=".12"></path></pattern>
+              <pattern id="sandHatch" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M1 16c5-5 10 3 18-3" fill="none" stroke="#8c6d35" stroke-width=".8" opacity=".22"></path></pattern>
+              <symbol id="pine" viewBox="-9 -18 18 20"><path d="M0-18 8-5H3l5 7H-8l5-7h-5Z" fill="#385443"></path><path d="M0-5v7" stroke="#385443" stroke-width="1.5"></path></symbol>
+            </defs>
+
+            <rect width="1700" height="1100" fill="url(#seaGradient)"></rect>
+            <g fill="none" stroke="#b4d6cf" stroke-linecap="round" opacity=".18">
+              <path d="M80 118c40 0 40-14 80-14s40 14 80 14 40-14 80-14"></path>
+              <path d="M1410 176c38 0 38-13 76-13s38 13 76 13 38-13 76-13"></path>
+              <path d="M1425 1000c38 0 38-13 76-13s38 13 76 13 38-13 76-13"></path>
+            </g>
+
+            <g filter="url(#softShadow)">
+              <path class="landmass" d="M0 0H1700V425C1612 402 1532 421 1460 480C1393 535 1324 571 1228 573C1150 576 1091 604 1054 664C1018 722 1035 776 1081 812C1139 858 1238 864 1330 889C1436 917 1556 964 1700 1024V1100H0Z" fill="url(#landWash)"></path>
+            </g>
+            <path class="bay-water" d="M1700 425C1612 402 1532 421 1460 480C1393 535 1324 571 1228 573C1150 576 1091 604 1054 664C1018 722 1035 776 1081 812C1139 858 1238 864 1330 889C1436 917 1556 964 1700 1024Z" fill="url(#bayShallow)"></path>
+            <path class="bay-wave" d="M1514 486C1420 492 1358 522 1298 566M1436 539C1350 548 1292 581 1242 621M1276 724C1224 701 1178 707 1132 731M1369 787C1282 776 1225 796 1170 835" fill="none" stroke="#b4d5cd" stroke-width="2" stroke-linecap="round" opacity=".22"></path>
+            <path class="coast-glow" d="M1700 425C1612 402 1532 421 1460 480C1393 535 1324 571 1228 573C1150 576 1091 604 1054 664C1018 722 1035 776 1081 812C1139 858 1238 864 1330 889C1436 917 1556 964 1700 1024" fill="none" stroke="#b7d2c5" stroke-width="18" opacity=".16"></path>
+            <path class="coast-line" d="M1700 425C1612 402 1532 421 1460 480C1393 535 1324 571 1228 573C1150 576 1091 604 1054 664C1018 722 1035 776 1081 812C1139 858 1238 864 1330 889C1436 917 1556 964 1700 1024" fill="none" stroke="#e8e1c2" stroke-width="2.8"></path>
+            <path d="M0 0H1700V425C1612 402 1532 421 1460 480C1393 535 1324 571 1228 573C1150 576 1091 604 1054 664C1018 722 1035 776 1081 812C1139 858 1238 864 1330 889C1436 917 1556 964 1700 1024V1100H0Z" fill="url(#forestHatch)" opacity=".08" pointer-events="none"></path>
+
+            <g class="regions">
+              <path class="region-shape" data-region="qinglan" tabindex="0" role="button" aria-label="查看青岚地区并开始测算距离" d="M100 165C235 68 456 58 646 131C741 170 800 241 810 342L774 465C712 553 612 610 496 632C369 653 246 617 167 538C91 462 65 360 76 260Z" fill="url(#qinglanWash)"></path>
+              <path class="region-shape" data-region="lanzhou" tabindex="0" role="button" aria-label="查看澜城地区并开始测算距离" d="M780 250C900 150 1080 150 1220 208L1328 294L1450 475C1380 545 1290 575 1210 573C1125 585 1070 620 1040 665L980 670C915 610 870 535 832 460L770 360Z" fill="url(#lanzhouWash)"></path>
+              <path class="region-shape" data-region="jinsha" tabindex="0" role="button" aria-label="查看金沙地区并开始测算距离" d="M1012 675C1072 678 1128 711 1166 748C1211 786 1280 812 1340 859C1404 908 1424 968 1388 1014C1328 1050 1214 1042 1110 1016C988 985 889 916 834 833C790 766 806 691 858 663C902 639 956 657 1012 675Z" fill="url(#jinshaWash)"></path>
+              <path class="region-shape" data-region="mingxi" tabindex="0" role="button" aria-label="查看鸣汐地区并开始测算距离" d="M1310 210C1430 180 1570 225 1640 320L1690 402L1640 465C1550 453 1480 420 1435 365L1348 287Z" fill="url(#mingxiWash)"></path>
+            </g>
+
+            <g class="region-textures" pointer-events="none">
+              <path d="M100 165C235 68 456 58 646 131C741 170 800 241 810 342L774 465C712 553 612 610 496 632C369 653 246 617 167 538C91 462 65 360 76 260Z" fill="url(#forestHatch)"></path>
+              <path d="M780 250C900 150 1080 150 1220 208L1328 294L1450 475C1380 545 1290 575 1210 573C1125 585 1070 620 1040 665L980 670C915 610 870 535 832 460L770 360Z" fill="url(#cityHatch)"></path>
+              <path d="M1012 675C1072 678 1128 711 1166 748C1211 786 1280 812 1340 859C1404 908 1424 968 1388 1014C1328 1050 1214 1042 1110 1016C988 985 889 916 834 833C790 766 806 691 858 663C902 639 956 657 1012 675Z" fill="url(#sandHatch)"></path>
+            </g>
+
+            <g class="zone-areas" pointer-events="none" aria-hidden="true">
+              <g clip-path="url(#clip-qinglan)">
+                <ellipse cx="522" cy="425" rx="155" ry="118" fill="#f4dba0" opacity=".09"></ellipse>
+                <ellipse cx="298" cy="485" rx="118" ry="92" fill="#cf8b65" opacity=".11"></ellipse>
+                <ellipse cx="470" cy="268" rx="215" ry="112" fill="#dfe7bd" opacity=".08"></ellipse>
+              </g>
+              <g clip-path="url(#clip-lanzhou)">
+                <ellipse cx="915" cy="455" rx="125" ry="132" fill="#f3dba8" opacity=".1"></ellipse>
+                <ellipse cx="1125" cy="435" rx="126" ry="96" fill="#f4c796" opacity=".13"></ellipse>
+                <ellipse cx="1192" cy="560" rx="105" ry="70" fill="#c9a98d" opacity=".12"></ellipse>
+              </g>
+              <g clip-path="url(#clip-jinsha)">
+                <ellipse cx="1160" cy="798" rx="126" ry="87" fill="#ffe1a0" opacity=".12"></ellipse>
+                <ellipse cx="1320" cy="858" rx="96" ry="92" fill="#e9bf78" opacity=".14"></ellipse>
+                <ellipse cx="1035" cy="912" rx="92" ry="77" fill="#b88b59" opacity=".13"></ellipse>
+                <ellipse cx="1275" cy="930" rx="108" ry="62" fill="#f0d6a0" opacity=".09"></ellipse>
+              </g>
+              <g clip-path="url(#clip-mingxi)">
+                <ellipse cx="1440" cy="282" rx="88" ry="49" fill="#d5e7de" opacity=".1"></ellipse>
+                <ellipse cx="1510" cy="335" rx="100" ry="60" fill="#b7cba8" opacity=".12"></ellipse>
+                <ellipse cx="1610" cy="398" rx="67" ry="55" fill="#f1dfb0" opacity=".1"></ellipse>
+              </g>
+            </g>
+            <g class="zone-labels" pointer-events="none">
+              <text x="512" y="470" class="zone-label">公共与居住</text><text x="286" y="522" class="zone-label">矿务设施</text><text x="435" y="232" class="zone-label">科研与山林</text>
+              <text x="884" y="505" class="zone-label">公共与居住</text><text x="1096" y="400" class="zone-label">商业区</text><text x="1180" y="606" class="zone-label">港区仓储</text>
+              <text x="1124" y="832" class="zone-label">商贸与公共</text><text x="1306" y="826" class="zone-label">港区</text><text x="1002" y="875" class="zone-label">工业区</text><text x="1244" y="965" class="zone-label">娱乐区</text>
+              <text x="1406" y="309" class="zone-label">公共与安防</text><text x="1482" y="358" class="zone-label">工业区</text><text x="1588" y="416" class="zone-label">居住与海岸</text>
+            </g>
+            <g class="terrain" pointer-events="none">
+              <path d="M240 380c-28-76 4-136 73-176 69-39 140-42 206-7 59 32 69 89 26 129-44 41-112 21-151 59-42 40-106 60-154-5Z" fill="#405f4b" opacity=".26"></path>
+              <path d="M292 349 344 225l49 64 45-89 65 149Z" fill="#536d54" opacity=".68"></path>
+              <path d="m344 225 29 81 20-17 45 89" fill="none" stroke="#d2d2b8" stroke-width="2" opacity=".48"></path>
+              <path d="M186 341 234 253l33 57 30-43 48 81Z" fill="#667c5d" opacity=".5"></path>
+              <g opacity=".82"><use href="#pine" x="215" y="270" width="18" height="20"></use><use href="#pine" x="274" y="307" width="18" height="20"></use><use href="#pine" x="341" y="371" width="17" height="19"></use><use href="#pine" x="248" y="410" width="18" height="20"></use><use href="#pine" x="356" y="463" width="17" height="19"></use><use href="#pine" x="432" y="246" width="17" height="19"></use><use href="#pine" x="506" y="302" width="18" height="20"></use><use href="#pine" x="476" y="438" width="17" height="19"></use><use href="#pine" x="590" y="410" width="16" height="18"></use><use href="#pine" x="399" y="537" width="16" height="18"></use></g>
+
+              <path d="M470 150c-20 102 5 192 76 261 52 51 74 118 61 202" fill="none" stroke="#9ac2b9" stroke-width="5" stroke-linecap="round"></path>
+              <path d="M716 472c46-32 95-24 119 19 21 38-2 80-41 89-41 10-81-21-81-61 0-18 0-33 3-47Z" fill="#588e8a" stroke="#c3d8c9" stroke-width="2" opacity=".82"></path>
+
+              <g fill="#77483e" opacity=".4"><rect x="932" y="340" width="38" height="27" rx="2"></rect><rect x="990" y="321" width="43" height="33" rx="2"></rect><rect x="1054" y="337" width="27" height="24" rx="2"></rect><rect x="1110" y="311" width="40" height="27" rx="2"></rect><rect x="914" y="397" width="31" height="24" rx="2"></rect><rect x="972" y="381" width="52" height="34" rx="2"></rect><rect x="1047" y="397" width="36" height="28" rx="2"></rect><rect x="1122" y="379" width="45" height="31" rx="2"></rect><rect x="977" y="447" width="42" height="24" rx="2"></rect><rect x="1046" y="456" width="59" height="29" rx="2"></rect></g>
+              <path d="M875 372h365M932 301v220M1045 279v236M1163 286v204" stroke="#f2dfba" stroke-width="3.5" opacity=".5"></path>
+
+              <g stroke="#efe1c4" fill="none" opacity=".68"><path d="M1254 846v-30M1289 854v-42M1324 852v-27M1246 851h93" stroke-width="5"></path><path d="M1114 904v-42h67v42M1128 907v-31M1155 907v-31" stroke-width="2.5"></path></g>
+              <g fill="#315b58" stroke="#a8c9c0" stroke-width="1.2"><path d="m1505 625 31-18 26 19-13 25-33 4-22-15Z" opacity=".65"></path><path d="m1396 773 25-10 18 16-11 21-27-2Z" opacity=".58"></path></g>
+            </g>
+
+            <g class="waterworks" pointer-events="none">
+              <path d="M460 205C415 260 375 325 340 390C323 423 306 469 300 500" fill="none" stroke="#214d52" stroke-width="14" opacity=".34"></path>
+              <path d="M460 205C415 260 375 325 340 390C323 423 306 469 300 500" fill="none" stroke="#78b3ad" stroke-width="5" stroke-linecap="round" opacity=".8"></path>
+              <path d="M356 363l-17-5M333 410l-17-4M318 455l-16-3" stroke="#d7ddc5" stroke-width="3" opacity=".58"></path>
+              <path d="M1205 358C1232 329 1283 322 1320 346C1352 367 1346 407 1310 424C1272 442 1224 424 1207 395C1198 381 1197 368 1205 358Z" fill="#41858a" stroke="#d9d9bc" stroke-width="2" opacity=".9"></path>
+              <path d="M1226 366C1246 350 1279 350 1301 363" fill="none" stroke="#a8d4ca" stroke-width="2" opacity=".52"></path>
+              <text x="1270" y="378" class="lake-name">镜 湖</text>
+              <path d="M1082 790C1058 825 1029 856 1002 891C986 911 971 934 955 966" fill="none" stroke="#1e5056" stroke-width="20" opacity=".38"></path>
+              <path d="M1082 790C1058 825 1029 856 1002 891C986 911 971 934 955 966" fill="none" stroke="#66a9a7" stroke-width="11" stroke-linecap="round" opacity=".88"></path>
+              <path d="M976 881L1027 916" stroke="#e8d8b7" stroke-width="7" stroke-linecap="round"></path>
+              <path d="M982 884L1023 913" stroke="#88664e" stroke-width="2.2" stroke-dasharray="4 4"></path>
+              <text x="1062" y="835" class="channel-name" transform="rotate(44 1062 835)">潮 渠</text>
+            </g>
+            <g class="map-art-detail" pointer-events="none">
+              <g class="mountain-extra">
+                <path d="M126 360 196 268l47 70 43-55 79 103Z" fill="#546b58" opacity=".44"></path>
+                <path d="m196 268 40 82 50-88 70 105" fill="none" stroke="#d7d6bd" stroke-width="1.6" opacity=".4"></path>
+                <path d="M1420 214 1480 172l34 47 34-27 51 71Z" fill="#466f6d" opacity=".34"></path>
+                <path d="m1480 172 31 57 37-40" fill="none" stroke="#d4dbcb" stroke-width="1.4" opacity=".35"></path>
+              </g>
+              <g class="building-clusters">
+                <g class="q-campus"><rect x="478" y="358" width="25" height="15" rx="1"></rect><rect x="510" y="350" width="36" height="22" rx="1"></rect><rect x="553" y="363" width="21" height="13" rx="1"></rect><rect x="487" y="393" width="42" height="17" rx="1"></rect><rect x="541" y="390" width="30" height="20" rx="1"></rect></g>
+                <g class="l-civic"><rect x="842" y="388" width="31" height="23" rx="1"></rect><rect x="881" y="378" width="42" height="33" rx="1"></rect><rect x="935" y="390" width="24" height="25" rx="1"></rect><rect x="858" y="449" width="35" height="24" rx="1"></rect><rect x="904" y="465" width="46" height="27" rx="1"></rect><rect x="962" y="456" width="30" height="22" rx="1"></rect><rect x="876" y="512" width="40" height="19" rx="1"></rect></g>
+                <g class="l-commercial"><rect x="1080" y="395" width="32" height="25" rx="1"></rect><rect x="1120" y="382" width="43" height="37" rx="1"></rect><rect x="1172" y="399" width="27" height="24" rx="1"></rect><rect x="1088" y="445" width="38" height="27" rx="1"></rect><rect x="1135" y="435" width="31" height="37" rx="1"></rect><rect x="1175" y="449" width="46" height="25" rx="1"></rect><rect x="1112" y="495" width="48" height="23" rx="1"></rect></g>
+                <g class="l-port"><path d="M1152 554h35v22h-35zM1197 545h48v31h-48zM1252 557h30v20h-30z" fill-rule="evenodd"></path><path d="M1160 554v-9M1176 554v-13M1210 545v-12M1230 545v-8" fill="none"></path></g>
+                <g class="j-market"><rect x="1068" y="766" width="32" height="21" rx="1"></rect><rect x="1108" y="756" width="45" height="28" rx="1"></rect><rect x="1161" y="771" width="27" height="22" rx="1"></rect><rect x="1080" y="809" width="39" height="22" rx="1"></rect><rect x="1128" y="803" width="33" height="28" rx="1"></rect></g>
+                <g class="j-port"><path d="M1240 855h43v25h-43zM1291 844h38v36h-38zM1338 860h25v21h-25z" fill-rule="evenodd"></path><path d="M1251 855v-13M1271 855v-9M1304 844v-14M1320 844v-9" fill="none"></path></g>
+                <g class="j-industry"><path d="M991 910h31v26h-31zM1028 898h20v38h-20zM1053 917h43v19h-43z" fill-rule="evenodd"></path><path d="M1040 898v-24h8v24" fill="none"></path></g>
+                <g class="m-industry"><path d="M1434 323h27v25h-27zM1468 316h35v32h-35zM1510 328h26v20h-26z" fill-rule="evenodd"></path><path d="M1482 316v-20h7v20M1520 328v-15" fill="none"></path></g>
+              </g>
+              <g class="tree-detail">
+                <use href="#pine" x="155" y="297" width="15" height="17"></use><use href="#pine" x="122" y="391" width="16" height="18"></use><use href="#pine" x="184" y="465" width="15" height="17"></use><use href="#pine" x="356" y="206" width="16" height="18"></use><use href="#pine" x="624" y="266" width="15" height="17"></use><use href="#pine" x="610" y="465" width="15" height="17"></use><use href="#pine" x="731" y="447" width="14" height="16"></use><use href="#pine" x="1245" y="497" width="14" height="16"></use><use href="#pine" x="1340" y="343" width="13" height="15"></use><use href="#pine" x="1375" y="907" width="14" height="16"></use><use href="#pine" x="1351" y="252" width="14" height="16"></use><use href="#pine" x="1582" y="327" width="13" height="15"></use>
+              </g>
+              <g class="ruin-art"><path d="M806 325l18-13 12 8 20-18 16 15-9 22-25 8-23-5Z" fill="none" stroke="#6e6253" stroke-width="2" opacity=".38"></path><path d="M1325 458l12-10 15 6 6 15-17 11-16-8Z" fill="none" stroke="#596f68" stroke-width="2" opacity=".42"></path></g>
+            </g>
+            <g class="main-roads" fill="none" pointer-events="none" aria-label="连接四地区的主干道">
+              <path class="road-shadow" d="M430 360C610 300 820 322 1010 380C1042 390 1068 402 1090 410"></path>
+              <path class="road-shadow" d="M1090 410C1185 368 1280 330 1370 310C1430 298 1482 316 1510 330"></path>
+              <path class="road-shadow" d="M1090 410C1030 455 987 508 984 565C982 622 1010 653 1040 680C1075 711 1085 790 1120 850"></path>
+              <path class="road-surface" d="M430 360C610 300 820 322 1010 380C1042 390 1068 402 1090 410"></path>
+              <path class="road-surface" d="M1090 410C1185 368 1280 330 1370 310C1430 298 1482 316 1510 330"></path>
+              <path class="road-surface" d="M1090 410C1030 455 987 508 984 565C982 622 1010 653 1040 680C1075 711 1085 790 1120 850"></path>
+              <path class="road-lane" d="M430 360C610 300 820 322 1010 380C1042 390 1068 402 1090 410"></path>
+              <path class="road-lane" d="M1090 410C1185 368 1280 330 1370 310C1430 298 1482 316 1510 330"></path>
+              <path class="road-lane" d="M1090 410C1030 455 987 508 984 565C982 622 1010 653 1040 680C1075 711 1085 790 1120 850"></path>
+              <g class="road-junctions"><circle cx="1090" cy="410" r="5"></circle><circle cx="430" cy="360" r="4"></circle><circle cx="1120" cy="850" r="4"></circle><circle cx="1510" cy="330" r="4"></circle></g>
+              <g class="secondary-roads">
+                <path d="M470 360C515 350 565 348 615 366M470 360C405 388 350 420 285 457M520 348C545 300 565 250 585 220M615 366C632 407 638 450 640 490"></path>
+                <path d="M875 394C895 428 918 465 948 492M1005 430C1050 424 1100 437 1155 454M1135 451C1155 492 1170 532 1180 560M930 500C980 510 1030 521 1075 530"></path>
+                <path d="M1088 780C1125 785 1160 793 1200 806M1200 806C1252 822 1300 842 1338 866M1088 780C1057 826 1037 866 1018 905M1200 806C1218 857 1234 900 1252 932"></path>
+                <path d="M1438 282C1460 306 1480 333 1498 356M1500 350C1540 360 1572 379 1595 401M1595 401C1613 411 1628 421 1640 430"></path>
+              </g><g class="road-names"><text x="688" y="304" transform="rotate(-5 688 304)">山海主驿道</text><text x="1370" y="287">东岸驿路</text><text x="978" y="614" transform="rotate(80 978 614)">环湾大道</text></g>
+            </g>
+
+            <g class="labels" pointer-events="none">
+              <text x="413" y="305" class="region-name">青岚</text><text x="414" y="334" class="region-name-en">QINGLAN · INLAND</text>
+              <text x="1070" y="342" class="region-name">澜城</text><text x="1066" y="371" class="region-name-en">LANZHOU · INNER BAY</text>
+              <text x="1112" y="867" class="region-name">金沙</text><text x="1108" y="896" class="region-name-en">JINSHA · SOUTH SHORE</text>
+              <text x="1480" y="327" class="region-name">鸣汐</text><text x="1455" y="356" class="region-name-en">MINGXI · OUTER EDGE</text>
+              <text x="1430" y="716" class="water-name">澜 海 湾</text>
+              <text x="1535" y="760" class="water-name water-name--small">凹 形 港 湾</text>
+            </g>
+
+            <g class="fog-field" pointer-events="none" aria-hidden="true">
+              <g filter="url(#fogBlur)" fill="url(#fogMilk)">
+                <path d="M-110 24C35 -55 176 -4 270 42C358 -11 484 9 560 66L604 153C455 174 324 143 209 184C91 217 -19 211 -112 254Z" opacity=".46"></path>
+                <path d="M-82 680C20 635 99 681 117 763C130 836 73 926 -65 1000L-105 1000Z" opacity=".42"></path>
+                <path d="M1260 1052C1398 1009 1512 1024 1645 1059C1701 1074 1750 1099 1796 1125H1190C1215 1095 1236 1071 1260 1052Z" opacity=".5"></path>
+              </g>
+              <g class="fog-puffs" filter="url(#fogBlur)" fill="#e1e8e2">
+                <ellipse cx="116" cy="126" rx="180" ry="102" opacity=".2"></ellipse>
+                <ellipse cx="46" cy="872" rx="190" ry="128" opacity=".22"></ellipse>
+                <ellipse cx="1480" cy="1068" rx="280" ry="92" opacity=".19"></ellipse>
+              </g>
+            </g>
+
+            <g class="compass" transform="translate(1581 163)" pointer-events="none"><circle r="47" fill="#d9d8bd" fill-opacity=".08" stroke="#d9d8bd" stroke-opacity=".3"></circle><circle r="34" fill="none" stroke="#d9d8bd" stroke-opacity=".2" stroke-dasharray="2 5"></circle><path d="m0-41 10 29L0 18-10-12Z" fill="#eadcba" opacity=".8"></path><path d="m0-41 10 29L0 18Z" fill="#bc7055" opacity=".9"></path><path d="m0 41 10-29L0-18-10 12Z" fill="#9bc2b8" opacity=".55"></path><text x="0" y="-58" text-anchor="middle">N</text><text x="0" y="67" text-anchor="middle">S</text><text x="61" y="5" text-anchor="middle">E</text><text x="-61" y="5" text-anchor="middle">W</text></g>
+            <g class="distance-route" id="distanceRoute" pointer-events="none"></g>
+            <rect width="1700" height="1100" filter="url(#grain)" pointer-events="none" opacity=".7"></rect>
+          </svg>
+          <div class="marker-layer" id="markerLayer"></div>
+        </div>
+
+        <div class="map-vignette" aria-hidden="true"></div>
+        <header class="map-topbar">
+          <div class="map-topbar__location"><span class="map-topbar__eyebrow">复苏纪 · 澜海湾沿海地志</span><div class="map-topbar__title"><span id="mapBreadcrumb">澜海湾全域</span><span class="map-topbar__divider"></span><span id="mapScale">四境总图</span></div></div>
+          <div class="map-topbar__actions"><button class="top-action" id="labelsToggle" type="button" aria-pressed="false" title="清除地区测距"><svg class="icon"><use href="#i-compass"></use></svg><span>重置</span></button><button class="top-action" id="resetView" type="button" title="查看全图"><svg class="icon"><use href="#i-maximize"></use></svg><span>全域</span></button></div>
+        </header>
+        <div class="map-controls" aria-label="地图缩放控制"><button class="map-control" id="zoomIn" type="button" title="放大"><svg class="icon"><use href="#i-plus"></use></svg></button><button class="map-control" id="zoomOut" type="button" title="缩小"><svg class="icon"><use href="#i-minus"></use></svg></button><span class="control-rule"></span><button class="map-control" id="compassReset" type="button" title="回到澜城"><svg class="icon"><use href="#i-compass"></use></svg></button></div>
+        <div class="map-readout"><span>潮位 <b>+2.4m</b></span><i></i><span>海雾 <b>重</b></span><i></i><span id="mapCoordinate">08°41′N · 17°12′E</span></div>
+      </div>
+    </main>
+  </div>
+
+  <aside class="detail-panel" id="detailPanel" aria-live="polite" aria-hidden="true"><button class="detail-close" id="detailClose" type="button" title="关闭详情"><svg class="icon"><use href="#i-x"></use></svg></button><div class="detail-panel__scroll" id="detailContent"></div></aside>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
