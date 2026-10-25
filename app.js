@@ -410,46 +410,145 @@ function renderPlaceDetail(place) {
   });
 }
 
-const ROUTE_HUBS = { qinglan:{x:430,y:360}, lanzhou:{x:1090,y:410}, mingxi:{x:1510,y:330}, jinsha:{x:1120,y:850} };
-const MAIN_ROAD_SEGMENTS = {
-  "lanzhou-qinglan": [[1090,410],[980,378],[800,338],[600,320],[430,360]],
-  "lanzhou-mingxi": [[1090,410],[1190,368],[1300,321],[1400,310],[1510,330]],
-  "jinsha-lanzhou": [[1120,850],[1085,790],[1040,680],[1010,653],[984,565],[987,508],[1030,455],[1090,410]]
-};
-
-function routePairKey(a, b) { return [a,b].sort().join("-"); }
-function routeHubPath(startId, endId) {
-  if (startId === endId) return [startId];
-  return [startId, "lanzhou", endId].filter((value, index, list) => list.indexOf(value) === index);
+const MAIN_ROADS = [
+  { id:"ql", points:[[430,360],[600,320],[800,338],[980,378],[1090,410]] },
+  { id:"lm", points:[[1090,410],[1190,368],[1300,321],[1400,310],[1510,330]] },
+  { id:"lj", points:[[1120,850],[1085,790],[1040,680],[1010,653],[984,565],[987,508],[1030,455],[1090,410]] }
+];
+const WATER_LINES = [
+  [[460,205],[420,260],[380,325],[345,390],[315,450],[300,500]],
+  [[470,150],[515,250],[558,360],[578,470],[600,615]],
+  [[817,530],[890,536],[960,550],[1024,572],[1088,606],[1125,631]],
+  [[1082,790],[1058,825],[1029,856],[1002,891],[971,934],[955,966]]
+];
+const WATER_AREAS = [
+  { cx:780, cy:525, rx:62, ry:56 },
+  { cx:1283, cy:525, rx:58, ry:44 }
+];
+function roadNodeKey(x, y) { return Math.round(x) + "," + Math.round(y); }
+function buildRoadGraph() {
+  const graph = new Map();
+  const add = (a, b, weight) => {
+    if (!graph.has(a)) graph.set(a, []);
+    if (!graph.has(b)) graph.set(b, []);
+    graph.get(a).push({ to:b, weight });
+    graph.get(b).push({ to:a, weight });
+  };
+  for (const road of MAIN_ROADS) {
+    for (let i = 0; i < road.points.length - 1; i++) {
+      const a = road.points[i], b = road.points[i+1];
+      add(roadNodeKey(...a), roadNodeKey(...b), Math.hypot(b[0]-a[0], b[1]-a[1]));
+    }
+  }
+  return graph;
 }
-function roadPointsFor(firstId, secondId) {
-  const key = routePairKey(firstId, secondId);
-  const points = MAIN_ROAD_SEGMENTS[key] || [];
-  const [keyStart] = key.split("-");
-  return keyStart === firstId ? points : [...points].reverse();
+const ROAD_GRAPH = buildRoadGraph();
+function lineIntersection(a,b,c,d) {
+  const cross = (p,q,r) => (q.x-p.x)*(r.y-p.y) - (q.y-p.y)*(r.x-p.x);
+  const on = (p,q,r) => Math.min(p.x,r.x)-.01 <= q.x && q.x <= Math.max(p.x,r.x)+.01 && Math.min(p.y,r.y)-.01 <= q.y && q.y <= Math.max(p.y,r.y)+.01;
+  const o1=cross(a,b,c), o2=cross(a,b,d), o3=cross(c,d,a), o4=cross(c,d,b);
+  if ((o1 > 0) !== (o2 > 0) && (o3 > 0) !== (o4 > 0)) return true;
+  return (Math.abs(o1)<.001 && on(a,c,b)) || (Math.abs(o2)<.001 && on(a,d,b)) || (Math.abs(o3)<.001 && on(c,a,d)) || (Math.abs(o4)<.001 && on(c,b,d));
+}
+function pointSegmentDistance(p,a,b) {
+  const dx=b.x-a.x, dy=b.y-a.y, len=dx*dx+dy*dy;
+  const t=len ? Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.y-a.y)*dy)/len)) : 0;
+  return Math.hypot(p.x-(a.x+t*dx), p.y-(a.y+t*dy));
+}
+function segmentCrossesWater(a,b) {
+  for (const line of WATER_LINES) {
+    for (let i=0;i<line.length-1;i++) {
+      if (lineIntersection(a,b,{x:line[i][0],y:line[i][1]},{x:line[i+1][0],y:line[i+1][1]})) return true;
+    }
+  }
+  for (const area of WATER_AREAS) {
+    const aa={x:(a.x-area.cx)/area.rx,y:(a.y-area.cy)/area.ry};
+    const bb={x:(b.x-area.cx)/area.rx,y:(b.y-area.cy)/area.ry};
+    if (pointSegmentDistance({x:0,y:0},aa,bb) <= .98) return true;
+  }
+  return false;
+}
+function projectPointToSegment(px,py,a,b) {
+  const dx=b[0]-a[0], dy=b[1]-a[1], len2=dx*dx+dy*dy;
+  const t=len2 ? Math.max(.01,Math.min(.99,((px-a[0])*dx+(py-a[1])*dy)/len2)) : .5;
+  return { x:a[0]+dx*t, y:a[1]+dy*t, t };
+}
+function snapCandidates(place) {
+  const candidates=[];
+  MAIN_ROADS.forEach((road,roadIndex)=>{
+    for(let i=0;i<road.points.length-1;i++){
+      const a=road.points[i], b=road.points[i+1];
+      const p=projectPointToSegment(place.x,place.y,a,b);
+      const len=Math.hypot(b[0]-a[0],b[1]-a[1]);
+      candidates.push({x:p.x,y:p.y,roadIndex,segIndex:i,t:p.t,distance:Math.hypot(place.x-p.x,place.y-p.y),aKey:roadNodeKey(...a),bKey:roadNodeKey(...b),startWeight:p.t*len,endWeight:(1-p.t)*len});
+    }
+  });
+  candidates.sort((a,b)=>a.distance-b.distance);
+  const clear=candidates.filter(c=>!segmentCrossesWater(place,c));
+  return (clear.length ? clear : candidates).slice(0,12);
+}
+function shortestRoadPath(startSnap,endSnap) {
+  const startKey="__route_start", endKey="__route_end";
+  const coords=new Map([[startKey,{x:startSnap.x,y:startSnap.y}],[endKey,{x:endSnap.x,y:endSnap.y}]]);
+  const dist=new Map([[startKey,0]]), prev=new Map(), queue=[[0,startKey]];
+  const relax=(from,to,weight)=>{const next=dist.get(from)+weight;if(next < (dist.get(to) ?? Infinity)){dist.set(to,next);prev.set(to,from);queue.push([next,to]);}};
+  relax(startKey,startSnap.aKey,startSnap.startWeight);
+  relax(startKey,startSnap.bKey,startSnap.endWeight);
+  if(startSnap.roadIndex===endSnap.roadIndex && startSnap.segIndex===endSnap.segIndex){
+    const road=MAIN_ROADS[startSnap.roadIndex], a=road.points[startSnap.segIndex], b=road.points[startSnap.segIndex+1];
+    relax(startKey,endKey,Math.abs(startSnap.t-endSnap.t)*Math.hypot(b[0]-a[0],b[1]-a[1]));
+  }
+  while(queue.length){
+    queue.sort((a,b)=>a[0]-b[0]);
+    const [cost,key]=queue.shift();
+    if(cost>dist.get(key)) continue;
+    if(key===endKey) break;
+    for(const edge of ROAD_GRAPH.get(key)||[]) relax(key,edge.to,edge.weight);
+    if(key===endSnap.aKey) relax(key,endKey,endSnap.startWeight);
+    if(key===endSnap.bKey) relax(key,endKey,endSnap.endWeight);
+  }
+  if(!dist.has(endKey)) return null;
+  const keys=[]; let cursor=endKey;
+  while(cursor){keys.push(cursor);if(cursor===startKey)break;cursor=prev.get(cursor);}
+  keys.reverse();
+  const points=keys.map(key=>{
+    if(coords.has(key)) return coords.get(key);
+    const [x,y]=key.split(",").map(Number); return {x,y};
+  });
+  return {points,distance:dist.get(endKey)};
+}
+function appendUnique(points, point) {
+  if (!points.length || Math.hypot(points[points.length-1].x-point.x,points[points.length-1].y-point.y)>.5) points.push({x:point.x,y:point.y});
+}
+function routeViaMainRoads(firstPlace, secondPlace) {
+  const starts=snapCandidates(firstPlace), ends=snapCandidates(secondPlace);
+  let best=null;
+  for(const startSnap of starts){
+    if(segmentCrossesWater(firstPlace,startSnap)) continue;
+    for(const endSnap of ends){
+      if(segmentCrossesWater(secondPlace,endSnap)) continue;
+      const roadRoute=shortestRoadPath(startSnap,endSnap);
+      if(!roadRoute) continue;
+      const total=startSnap.distance+roadRoute.distance+endSnap.distance;
+      if(!best||total<best.total) best={startSnap,endSnap,roadRoute,total};
+    }
+  }
+  if(!best) return null;
+  const points=[];
+  appendUnique(points,firstPlace); appendUnique(points,best.startSnap);
+  for(const point of best.roadRoute.points) appendUnique(points,point);
+  appendUnique(points,best.endSnap); appendUnique(points,secondPlace);
+  return {points,rawDistance:best.total};
 }
 function buildPlaceRoute(firstPlace, secondPlace) {
-  const points = [];
-  const addPoint = (x, y) => {
-    if (!points.length || Math.hypot(points[points.length - 1].x - x, points[points.length - 1].y - y) > 0.5) points.push({x,y});
-  };
-  addPoint(firstPlace.x, firstPlace.y);
-  if (firstPlace.region === secondPlace.region) {
-    addPoint(secondPlace.x, secondPlace.y);
+  const sameRegion=firstPlace.region===secondPlace.region;
+  let route=null;
+  if(sameRegion && !segmentCrossesWater(firstPlace,secondPlace)) {
+    route={points:[{x:firstPlace.x,y:firstPlace.y},{x:secondPlace.x,y:secondPlace.y}],rawDistance:Math.hypot(secondPlace.x-firstPlace.x,secondPlace.y-firstPlace.y)};
   } else {
-    const hubs = routeHubPath(firstPlace.region, secondPlace.region);
-    const startHub = ROUTE_HUBS[hubs[0]];
-    addPoint(startHub.x, startHub.y);
-    for (let i = 0; i < hubs.length - 1; i++) {
-      for (const [x,y] of roadPointsFor(hubs[i], hubs[i + 1])) addPoint(x,y);
-    }
-    const endHub = ROUTE_HUBS[hubs[hubs.length - 1]];
-    addPoint(endHub.x, endHub.y);
-    addPoint(secondPlace.x, secondPlace.y);
+    route=routeViaMainRoads(firstPlace,secondPlace) || {points:[{x:firstPlace.x,y:firstPlace.y},{x:secondPlace.x,y:secondPlace.y}],rawDistance:Math.hypot(secondPlace.x-firstPlace.x,secondPlace.y-firstPlace.y)};
   }
-  let rawDistance = 0;
-  for (let i = 1; i < points.length; i++) rawDistance += Math.hypot(points[i].x - points[i-1].x, points[i].y - points[i-1].y);
-  return { points, sameRegion: firstPlace.region === secondPlace.region, km: Math.max(1, Math.round(rawDistance * .03)) };
+  return { points:route.points, sameRegion, km:Math.max(1,Math.round(route.rawDistance*.03)) };
 }
 function placeDistance(firstPlace, secondPlace) { return buildPlaceRoute(firstPlace, secondPlace).km; }
 function routePointAt(points, fraction = .5) {
