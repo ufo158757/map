@@ -425,6 +425,955 @@ const WATER_AREAS = [
   { cx:780, cy:525, rx:62, ry:56 },
   { cx:1283, cy:525, rx:58, ry:44 }
 ];
+const WATER_POLYGONS = [
+  [{x:1700,y:425},{x:1612,y:402},{x:1532,y:421},{x:1460,y:480},{x:1393,y:535},{x:1324,y:571},{x:1228,y:573},{x:1150,y:576},{x:1091,y:604},{x:1054,y:664},{x:1018,y:722},{x:1035,y:776},{x:1081,y:812},{x:1139,y:858},{x:1238,y:864},{x:1330,y:889},{x:1436,y:917},{x:1556,y:964},{x:1700,y:1024}]
+];
+const REGION_ROUTE_AREAS = {
+  qinglan: [
+    {
+      x: 100,
+      y: 165
+    },
+    {
+      x: 135,
+      y: 143
+    },
+    {
+      x: 174,
+      y: 124
+    },
+    {
+      x: 216,
+      y: 109
+    },
+    {
+      x: 259,
+      y: 97
+    },
+    {
+      x: 305,
+      y: 89
+    },
+    {
+      x: 352,
+      y: 84
+    },
+    {
+      x: 401,
+      y: 83
+    },
+    {
+      x: 450,
+      y: 86
+    },
+    {
+      x: 500,
+      y: 92
+    },
+    {
+      x: 549,
+      y: 101
+    },
+    {
+      x: 598,
+      y: 114
+    },
+    {
+      x: 646,
+      y: 131
+    },
+    {
+      x: 669,
+      y: 141
+    },
+    {
+      x: 690,
+      y: 153
+    },
+    {
+      x: 710,
+      y: 166
+    },
+    {
+      x: 729,
+      y: 181
+    },
+    {
+      x: 745,
+      y: 196
+    },
+    {
+      x: 760,
+      y: 213
+    },
+    {
+      x: 773,
+      y: 232
+    },
+    {
+      x: 784,
+      y: 251
+    },
+    {
+      x: 794,
+      y: 272
+    },
+    {
+      x: 801,
+      y: 294
+    },
+    {
+      x: 806,
+      y: 317
+    },
+    {
+      x: 810,
+      y: 342
+    },
+    {
+      x: 774,
+      y: 465
+    },
+    {
+      x: 758,
+      y: 486
+    },
+    {
+      x: 740,
+      y: 506
+    },
+    {
+      x: 721,
+      y: 525
+    },
+    {
+      x: 700,
+      y: 543
+    },
+    {
+      x: 678,
+      y: 559
+    },
+    {
+      x: 655,
+      y: 573
+    },
+    {
+      x: 631,
+      y: 587
+    },
+    {
+      x: 606,
+      y: 598
+    },
+    {
+      x: 580,
+      y: 609
+    },
+    {
+      x: 553,
+      y: 618
+    },
+    {
+      x: 525,
+      y: 626
+    },
+    {
+      x: 496,
+      y: 632
+    },
+    {
+      x: 464,
+      y: 636
+    },
+    {
+      x: 433,
+      y: 638
+    },
+    {
+      x: 402,
+      y: 637
+    },
+    {
+      x: 372,
+      y: 635
+    },
+    {
+      x: 342,
+      y: 630
+    },
+    {
+      x: 314,
+      y: 623
+    },
+    {
+      x: 286,
+      y: 613
+    },
+    {
+      x: 259,
+      y: 602
+    },
+    {
+      x: 234,
+      y: 589
+    },
+    {
+      x: 210,
+      y: 574
+    },
+    {
+      x: 188,
+      y: 557
+    },
+    {
+      x: 167,
+      y: 538
+    },
+    {
+      x: 149,
+      y: 518
+    },
+    {
+      x: 133,
+      y: 498
+    },
+    {
+      x: 119,
+      y: 477
+    },
+    {
+      x: 107,
+      y: 454
+    },
+    {
+      x: 97,
+      y: 431
+    },
+    {
+      x: 89,
+      y: 408
+    },
+    {
+      x: 82,
+      y: 384
+    },
+    {
+      x: 78,
+      y: 360
+    },
+    {
+      x: 75,
+      y: 335
+    },
+    {
+      x: 74,
+      y: 310
+    },
+    {
+      x: 74,
+      y: 285
+    },
+    {
+      x: 76,
+      y: 260
+    },
+    {
+      x: 100,
+      y: 165
+    }
+  ],
+  lanzhou: [
+    {
+      x: 780,
+      y: 250
+    },
+    {
+      x: 811,
+      y: 227
+    },
+    {
+      x: 845,
+      y: 208
+    },
+    {
+      x: 880,
+      y: 193
+    },
+    {
+      x: 916,
+      y: 182
+    },
+    {
+      x: 954,
+      y: 174
+    },
+    {
+      x: 993,
+      y: 170
+    },
+    {
+      x: 1031,
+      y: 169
+    },
+    {
+      x: 1070,
+      y: 171
+    },
+    {
+      x: 1109,
+      y: 176
+    },
+    {
+      x: 1147,
+      y: 184
+    },
+    {
+      x: 1184,
+      y: 195
+    },
+    {
+      x: 1220,
+      y: 208
+    },
+    {
+      x: 1328,
+      y: 294
+    },
+    {
+      x: 1450,
+      y: 475
+    },
+    {
+      x: 1432,
+      y: 492
+    },
+    {
+      x: 1413,
+      y: 507
+    },
+    {
+      x: 1394,
+      y: 520
+    },
+    {
+      x: 1374,
+      y: 532
+    },
+    {
+      x: 1354,
+      y: 542
+    },
+    {
+      x: 1334,
+      y: 551
+    },
+    {
+      x: 1313,
+      y: 558
+    },
+    {
+      x: 1292,
+      y: 564
+    },
+    {
+      x: 1271,
+      y: 568
+    },
+    {
+      x: 1251,
+      y: 571
+    },
+    {
+      x: 1230,
+      y: 573
+    },
+    {
+      x: 1210,
+      y: 573
+    },
+    {
+      x: 1189,
+      y: 576
+    },
+    {
+      x: 1170,
+      y: 581
+    },
+    {
+      x: 1152,
+      y: 586
+    },
+    {
+      x: 1135,
+      y: 592
+    },
+    {
+      x: 1119,
+      y: 599
+    },
+    {
+      x: 1104,
+      y: 607
+    },
+    {
+      x: 1091,
+      y: 615
+    },
+    {
+      x: 1079,
+      y: 624
+    },
+    {
+      x: 1067,
+      y: 633
+    },
+    {
+      x: 1057,
+      y: 643
+    },
+    {
+      x: 1048,
+      y: 654
+    },
+    {
+      x: 1040,
+      y: 665
+    },
+    {
+      x: 980,
+      y: 670
+    },
+    {
+      x: 964,
+      y: 655
+    },
+    {
+      x: 949,
+      y: 639
+    },
+    {
+      x: 935,
+      y: 622
+    },
+    {
+      x: 921,
+      y: 606
+    },
+    {
+      x: 908,
+      y: 588
+    },
+    {
+      x: 896,
+      y: 571
+    },
+    {
+      x: 884,
+      y: 553
+    },
+    {
+      x: 873,
+      y: 534
+    },
+    {
+      x: 862,
+      y: 516
+    },
+    {
+      x: 852,
+      y: 497
+    },
+    {
+      x: 842,
+      y: 479
+    },
+    {
+      x: 832,
+      y: 460
+    },
+    {
+      x: 770,
+      y: 360
+    },
+    {
+      x: 780,
+      y: 250
+    }
+  ],
+  jinsha: [
+    {
+      x: 1012,
+      y: 675
+    },
+    {
+      x: 1027,
+      y: 676
+    },
+    {
+      x: 1042,
+      y: 679
+    },
+    {
+      x: 1056,
+      y: 682
+    },
+    {
+      x: 1070,
+      y: 687
+    },
+    {
+      x: 1084,
+      y: 692
+    },
+    {
+      x: 1097,
+      y: 699
+    },
+    {
+      x: 1110,
+      y: 706
+    },
+    {
+      x: 1123,
+      y: 713
+    },
+    {
+      x: 1134,
+      y: 721
+    },
+    {
+      x: 1146,
+      y: 730
+    },
+    {
+      x: 1156,
+      y: 739
+    },
+    {
+      x: 1166,
+      y: 748
+    },
+    {
+      x: 1178,
+      y: 757
+    },
+    {
+      x: 1190,
+      y: 766
+    },
+    {
+      x: 1204,
+      y: 775
+    },
+    {
+      x: 1218,
+      y: 783
+    },
+    {
+      x: 1232,
+      y: 792
+    },
+    {
+      x: 1247,
+      y: 800
+    },
+    {
+      x: 1263,
+      y: 809
+    },
+    {
+      x: 1278,
+      y: 818
+    },
+    {
+      x: 1294,
+      y: 827
+    },
+    {
+      x: 1309,
+      y: 837
+    },
+    {
+      x: 1325,
+      y: 848
+    },
+    {
+      x: 1340,
+      y: 859
+    },
+    {
+      x: 1355,
+      y: 871
+    },
+    {
+      x: 1368,
+      y: 884
+    },
+    {
+      x: 1380,
+      y: 897
+    },
+    {
+      x: 1389,
+      y: 911
+    },
+    {
+      x: 1396,
+      y: 924
+    },
+    {
+      x: 1402,
+      y: 938
+    },
+    {
+      x: 1405,
+      y: 951
+    },
+    {
+      x: 1406,
+      y: 964
+    },
+    {
+      x: 1405,
+      y: 977
+    },
+    {
+      x: 1401,
+      y: 990
+    },
+    {
+      x: 1396,
+      y: 1002
+    },
+    {
+      x: 1388,
+      y: 1014
+    },
+    {
+      x: 1372,
+      y: 1022
+    },
+    {
+      x: 1354,
+      y: 1028
+    },
+    {
+      x: 1334,
+      y: 1033
+    },
+    {
+      x: 1312,
+      y: 1036
+    },
+    {
+      x: 1290,
+      y: 1038
+    },
+    {
+      x: 1266,
+      y: 1038
+    },
+    {
+      x: 1241,
+      y: 1037
+    },
+    {
+      x: 1215,
+      y: 1035
+    },
+    {
+      x: 1189,
+      y: 1032
+    },
+    {
+      x: 1163,
+      y: 1027
+    },
+    {
+      x: 1136,
+      y: 1022
+    },
+    {
+      x: 1110,
+      y: 1016
+    },
+    {
+      x: 1080,
+      y: 1007
+    },
+    {
+      x: 1051,
+      y: 997
+    },
+    {
+      x: 1023,
+      y: 986
+    },
+    {
+      x: 996,
+      y: 973
+    },
+    {
+      x: 971,
+      y: 959
+    },
+    {
+      x: 947,
+      y: 944
+    },
+    {
+      x: 924,
+      y: 928
+    },
+    {
+      x: 903,
+      y: 910
+    },
+    {
+      x: 883,
+      y: 892
+    },
+    {
+      x: 865,
+      y: 873
+    },
+    {
+      x: 849,
+      y: 853
+    },
+    {
+      x: 834,
+      y: 833
+    },
+    {
+      x: 824,
+      y: 816
+    },
+    {
+      x: 817,
+      y: 799
+    },
+    {
+      x: 812,
+      y: 782
+    },
+    {
+      x: 809,
+      y: 765
+    },
+    {
+      x: 809,
+      y: 749
+    },
+    {
+      x: 810,
+      y: 733
+    },
+    {
+      x: 813,
+      y: 719
+    },
+    {
+      x: 819,
+      y: 705
+    },
+    {
+      x: 826,
+      y: 692
+    },
+    {
+      x: 835,
+      y: 681
+    },
+    {
+      x: 846,
+      y: 671
+    },
+    {
+      x: 858,
+      y: 663
+    },
+    {
+      x: 869,
+      y: 658
+    },
+    {
+      x: 881,
+      y: 654
+    },
+    {
+      x: 893,
+      y: 652
+    },
+    {
+      x: 905,
+      y: 651
+    },
+    {
+      x: 918,
+      y: 652
+    },
+    {
+      x: 931,
+      y: 653
+    },
+    {
+      x: 944,
+      y: 656
+    },
+    {
+      x: 957,
+      y: 659
+    },
+    {
+      x: 971,
+      y: 662
+    },
+    {
+      x: 984,
+      y: 666
+    },
+    {
+      x: 998,
+      y: 671
+    },
+    {
+      x: 1012,
+      y: 675
+    },
+    {
+      x: 1012,
+      y: 675
+    }
+  ],
+  mingxi: [
+    {
+      x: 1310,
+      y: 210
+    },
+    {
+      x: 1340,
+      y: 204
+    },
+    {
+      x: 1371,
+      y: 201
+    },
+    {
+      x: 1402,
+      y: 201
+    },
+    {
+      x: 1433,
+      y: 204
+    },
+    {
+      x: 1464,
+      y: 210
+    },
+    {
+      x: 1494,
+      y: 218
+    },
+    {
+      x: 1523,
+      y: 229
+    },
+    {
+      x: 1550,
+      y: 243
+    },
+    {
+      x: 1576,
+      y: 259
+    },
+    {
+      x: 1600,
+      y: 277
+    },
+    {
+      x: 1621,
+      y: 297
+    },
+    {
+      x: 1640,
+      y: 320
+    },
+    {
+      x: 1690,
+      y: 402
+    },
+    {
+      x: 1640,
+      y: 465
+    },
+    {
+      x: 1618,
+      y: 462
+    },
+    {
+      x: 1597,
+      y: 457
+    },
+    {
+      x: 1576,
+      y: 452
+    },
+    {
+      x: 1557,
+      y: 446
+    },
+    {
+      x: 1538,
+      y: 439
+    },
+    {
+      x: 1521,
+      y: 431
+    },
+    {
+      x: 1504,
+      y: 422
+    },
+    {
+      x: 1488,
+      y: 413
+    },
+    {
+      x: 1473,
+      y: 402
+    },
+    {
+      x: 1460,
+      y: 391
+    },
+    {
+      x: 1447,
+      y: 378
+    },
+    {
+      x: 1435,
+      y: 365
+    },
+    {
+      x: 1348,
+      y: 287
+    },
+    {
+      x: 1310,
+      y: 210
+    }
+  ]
+};
+function pointInPolygon(point,polygon) {
+  let inside=false;
+  for(let i=0,j=polygon.length-1;i<polygon.length;j=i++){
+    const a=polygon[i],b=polygon[j];
+    if(((a.y>point.y)!==(b.y>point.y)) && point.x < (b.x-a.x)*(point.y-a.y)/(b.y-a.y)+a.x) inside=!inside;
+  }
+  return inside;
+}
 function roadNodeKey(x, y) { return Math.round(x) + "," + Math.round(y); }
 function buildRoadGraph() {
   const graph = new Map();
@@ -466,12 +1415,28 @@ function segmentCrossesWater(a,b) {
     const bb={x:(b.x-area.cx)/area.rx,y:(b.y-area.cy)/area.ry};
     if (pointSegmentDistance({x:0,y:0},aa,bb) <= .98) return true;
   }
+  for (const polygon of WATER_POLYGONS) {
+    if (pointInPolygon(a,polygon) || pointInPolygon(b,polygon)) return true;
+    for(let i=0;i<polygon.length-1;i++) if(lineIntersection(a,b,polygon[i],polygon[i+1])) return true;
+    if(lineIntersection(a,b,polygon[polygon.length-1],polygon[0])) return true;
+  }
   return false;
 }
 function projectPointToSegment(px,py,a,b) {
   const dx=b[0]-a[0], dy=b[1]-a[1], len2=dx*dx+dy*dy;
   const t=len2 ? Math.max(.01,Math.min(.99,((px-a[0])*dx+(py-a[1])*dy)/len2)) : .5;
   return { x:a[0]+dx*t, y:a[1]+dy*t, t };
+}
+function connectorStaysInRegion(place, point) {
+  const polygon=REGION_ROUTE_AREAS[place.region];
+  if(!polygon) return true;
+  const distance=Math.hypot(place.x-point.x,place.y-point.y);
+  const steps=Math.max(1,Math.ceil(distance/14));
+  for(let i=0;i<=steps;i++) {
+    const t=i/steps;
+    if(!pointInPolygon({x:place.x+(point.x-place.x)*t,y:place.y+(point.y-place.y)*t},polygon)) return false;
+  }
+  return true;
 }
 function snapCandidates(place) {
   const candidates=[];
@@ -480,7 +1445,7 @@ function snapCandidates(place) {
       const a=road.points[i], b=road.points[i+1];
       const p=projectPointToSegment(place.x,place.y,a,b);
       const len=Math.hypot(b[0]-a[0],b[1]-a[1]);
-      candidates.push({x:p.x,y:p.y,roadIndex,segIndex:i,t:p.t,distance:Math.hypot(place.x-p.x,place.y-p.y),aKey:roadNodeKey(...a),bKey:roadNodeKey(...b),startWeight:p.t*len,endWeight:(1-p.t)*len});
+      if(connectorStaysInRegion(place,{x:p.x,y:p.y})) candidates.push({x:p.x,y:p.y,roadIndex,segIndex:i,t:p.t,distance:Math.hypot(place.x-p.x,place.y-p.y),aKey:roadNodeKey(...a),bKey:roadNodeKey(...b),startWeight:p.t*len,endWeight:(1-p.t)*len});
     }
   });
   candidates.sort((a,b)=>a.distance-b.distance);
@@ -522,13 +1487,13 @@ function shortestRoadPath(startSnap,endSnap) {
 function appendUnique(points, point) {
   if (!points.length || Math.hypot(points[points.length-1].x-point.x,points[points.length-1].y-point.y)>.5) points.push({x:point.x,y:point.y});
 }
-function routeViaMainRoads(firstPlace, secondPlace) {
+function routeViaMainRoads(firstPlace, secondPlace, allowUnsafeConnectors = false) {
   const starts=snapCandidates(firstPlace), ends=snapCandidates(secondPlace);
   let best=null;
   for(const startSnap of starts){
-    if(segmentCrossesWater(firstPlace,startSnap)) continue;
+    if(!allowUnsafeConnectors && segmentCrossesWater(firstPlace,startSnap)) continue;
     for(const endSnap of ends){
-      if(segmentCrossesWater(secondPlace,endSnap)) continue;
+      if(!allowUnsafeConnectors && segmentCrossesWater(secondPlace,endSnap)) continue;
       const roadRoute=shortestRoadPath(startSnap,endSnap);
       if(!roadRoute) continue;
       const total=startSnap.distance+roadRoute.distance+endSnap.distance;
@@ -548,7 +1513,7 @@ function buildPlaceRoute(firstPlace, secondPlace) {
   if(sameRegion && !segmentCrossesWater(firstPlace,secondPlace)) {
     route={points:[{x:firstPlace.x,y:firstPlace.y},{x:secondPlace.x,y:secondPlace.y}],rawDistance:Math.hypot(secondPlace.x-firstPlace.x,secondPlace.y-firstPlace.y)};
   } else {
-    route=routeViaMainRoads(firstPlace,secondPlace) || {points:[{x:firstPlace.x,y:firstPlace.y},{x:secondPlace.x,y:secondPlace.y}],rawDistance:Math.hypot(secondPlace.x-firstPlace.x,secondPlace.y-firstPlace.y)};
+    route=routeViaMainRoads(firstPlace,secondPlace) || routeViaMainRoads(firstPlace,secondPlace,true) || {points:[{x:firstPlace.x,y:firstPlace.y},{x:secondPlace.x,y:secondPlace.y}],rawDistance:Math.hypot(secondPlace.x-firstPlace.x,secondPlace.y-firstPlace.y)};
   }
   return { points:route.points, sameRegion, km:Math.max(1,Math.round(route.rawDistance*.03)) };
 }
