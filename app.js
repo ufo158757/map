@@ -232,7 +232,8 @@ function renderMarkers() {
   markerLayer.innerHTML = list.map(place => {
     const region = regionOf(place.region);
     const hasNote = Boolean(placeNotes[place.id]?.text);
-    const cls = ['poi', place.major ? 'is-major' : '', place.major && !place.apartment && !place.spawn ? 'is-landmark' : '', place.apartment ? 'is-apartment' : '', place.spawn ? 'is-spawn' : '', hasNote ? 'has-note' : ''].filter(Boolean).join(' ');
+    const isMajor = Boolean(place.major && !place.apartment);
+    const cls = ['poi', isMajor ? 'is-major' : '', isMajor && !place.spawn ? 'is-landmark' : '', place.apartment ? 'is-apartment' : '', place.spawn ? 'is-spawn' : '', hasNote ? 'has-note' : ''].filter(Boolean).join(' ');
     return '<button class="' + cls + '" type="button" data-place-id="' + place.id + '" style="left:' + place.x + 'px;top:' + place.y + 'px;--poi-color:' + region.color + '" aria-label="' + region.name + ' · ' + place.name + '，' + place.type + '" title="' + region.name + ' · ' + place.name + '">' +
       '<span class="poi__pin" aria-hidden="true"></span><span class="poi__label">' + place.name + '</span>' + (hasNote ? '<span class="poi__note-dot" title="已有笔记"></span>' : '') + '</button>';
   }).join("");
@@ -384,7 +385,7 @@ function renderPlaceDetail(place) {
         <textarea class="note-panel__input" data-note-input maxlength="800" placeholder="记录线索、传闻或自己的标注"></textarea>
         <div class="note-panel__actions"><button type="button" data-save-note>保存笔记</button><button type="button" data-clear-note>清除</button></div>
       </div>
-      <div class="point-distance-state"><span>距离记录</span><strong>起点 · 01</strong><i></i></div>
+      <div class="point-distance-state"><span>路线记录</span><strong>起点 · 01</strong><i></i></div>
       <button class="detail-locate" type="button" data-locate-place="${place.id}" style="--hero-color:${region.hero}">${icon("pin")} 在地图中定位</button>
     </div>
   `;
@@ -409,34 +410,78 @@ function renderPlaceDetail(place) {
   });
 }
 
-function placeDistance(firstPlace, secondPlace) {
-  return Math.max(1, Math.round(Math.hypot(firstPlace.x - secondPlace.x, firstPlace.y - secondPlace.y) * .12));
-}
+const ROUTE_HUBS = { qinglan:{x:430,y:360}, lanzhou:{x:1090,y:410}, mingxi:{x:1510,y:330}, jinsha:{x:1120,y:850} };
+const MAIN_ROAD_SEGMENTS = {
+  "lanzhou-qinglan": [[1090,410],[980,378],[800,338],[600,320],[430,360]],
+  "lanzhou-mingxi": [[1090,410],[1190,368],[1300,321],[1400,310],[1510,330]],
+  "jinsha-lanzhou": [[1120,850],[1085,790],[1040,680],[1010,653],[984,565],[987,508],[1030,455],[1090,410]]
+};
 
+function routePairKey(a, b) { return [a,b].sort().join("-"); }
+function routeHubPath(startId, endId) {
+  if (startId === endId) return [startId];
+  return [startId, "lanzhou", endId].filter((value, index, list) => list.indexOf(value) === index);
+}
+function roadPointsFor(firstId, secondId) {
+  const key = routePairKey(firstId, secondId);
+  const points = MAIN_ROAD_SEGMENTS[key] || [];
+  const [keyStart] = key.split("-");
+  return keyStart === firstId ? points : [...points].reverse();
+}
+function buildPlaceRoute(firstPlace, secondPlace) {
+  const points = [];
+  const addPoint = (x, y) => {
+    if (!points.length || Math.hypot(points[points.length - 1].x - x, points[points.length - 1].y - y) > 0.5) points.push({x,y});
+  };
+  addPoint(firstPlace.x, firstPlace.y);
+  if (firstPlace.region === secondPlace.region) {
+    addPoint(secondPlace.x, secondPlace.y);
+  } else {
+    const hubs = routeHubPath(firstPlace.region, secondPlace.region);
+    const startHub = ROUTE_HUBS[hubs[0]];
+    addPoint(startHub.x, startHub.y);
+    for (let i = 0; i < hubs.length - 1; i++) {
+      for (const [x,y] of roadPointsFor(hubs[i], hubs[i + 1])) addPoint(x,y);
+    }
+    const endHub = ROUTE_HUBS[hubs[hubs.length - 1]];
+    addPoint(endHub.x, endHub.y);
+    addPoint(secondPlace.x, secondPlace.y);
+  }
+  let rawDistance = 0;
+  for (let i = 1; i < points.length; i++) rawDistance += Math.hypot(points[i].x - points[i-1].x, points[i].y - points[i-1].y);
+  return { points, sameRegion: firstPlace.region === secondPlace.region, km: Math.max(1, Math.round(rawDistance * .03)) };
+}
+function placeDistance(firstPlace, secondPlace) { return buildPlaceRoute(firstPlace, secondPlace).km; }
+function routePointAt(points, fraction = .5) {
+  const lengths = [];
+  let total = 0;
+  for (let i = 1; i < points.length; i++) { const length = Math.hypot(points[i].x-points[i-1].x, points[i].y-points[i-1].y); lengths.push(length); total += length; }
+  let target = total * fraction;
+  for (let i = 0; i < lengths.length; i++) {
+    if (target <= lengths[i]) { const t = lengths[i] ? target / lengths[i] : 0; return { x: points[i].x + (points[i+1].x-points[i].x)*t, y: points[i].y + (points[i+1].y-points[i].y)*t }; }
+    target -= lengths[i];
+  }
+  return points[points.length-1];
+}
 function drawPlaceRoute(firstPlace, secondPlace) {
   const layer = document.querySelector("#distanceRoute");
   if (!layer) return;
   if (!firstPlace || !secondPlace) { layer.innerHTML = ""; return; }
-  const p1 = firstPlace, p2 = secondPlace;
-  const dx = p2.x - p1.x, dy = p2.y - p1.y, length = Math.hypot(dx, dy) || 1;
-  const bend = Math.min(82, Math.max(22, length * .16)) * (firstPlace.id < secondPlace.id ? 1 : -1);
-  const cx = (p1.x + p2.x) / 2 - dy / length * bend;
-  const cy = (p1.y + p2.y) / 2 + dx / length * bend;
-  const qx = p1.x * .25 + cx * .5 + p2.x * .25;
-  const qy = p1.y * .25 + cy * .5 + p2.y * .25;
-  const km = placeDistance(firstPlace, secondPlace);
+  const route = buildPlaceRoute(firstPlace, secondPlace);
+  const d = route.points.map((point, index) => (index ? "L" : "M") + point.x + " " + point.y).join(" ");
+  const labelPoint = routePointAt(route.points, .5);
   const a = regionOf(firstPlace.region), b = regionOf(secondPlace.region);
   layer.innerHTML = `
-    <path class="route-halo" d="M${p1.x} ${p1.y} Q${cx} ${cy} ${p2.x} ${p2.y}"></path>
-    <path class="route-line" d="M${p1.x} ${p1.y} Q${cx} ${cy} ${p2.x} ${p2.y}"></path>
-    <circle class="route-node-halo" cx="${p1.x}" cy="${p1.y}" r="15" style="--route-color:${a.color}"></circle>
-    <circle class="route-node" cx="${p1.x}" cy="${p1.y}" r="6" style="--route-color:${a.color}"></circle>
-    <circle class="route-node-halo" cx="${p2.x}" cy="${p2.y}" r="15" style="--route-color:${b.color}"></circle>
-    <circle class="route-node" cx="${p2.x}" cy="${p2.y}" r="6" style="--route-color:${b.color}"></circle>
-    <g transform="translate(${qx} ${qy})">
-      <rect class="route-label-bg" x="-51" y="-23" width="102" height="45" rx="5"></rect>
-      <text class="route-label-text" y="-3">${km} km</text>
-      <text class="route-label-sub" y="12">POINT TO POINT</text>
+    <path class="route-halo" d="${d}"></path>
+    <path class="route-line" d="${d}"></path>
+    <circle class="route-node-halo" cx="${firstPlace.x}" cy="${firstPlace.y}" r="15" style="--route-color:${a.color}"></circle>
+    <circle class="route-node" cx="${firstPlace.x}" cy="${firstPlace.y}" r="6" style="--route-color:${a.color}"></circle>
+    <circle class="route-node-halo" cx="${secondPlace.x}" cy="${secondPlace.y}" r="15" style="--route-color:${b.color}"></circle>
+    <circle class="route-node" cx="${secondPlace.x}" cy="${secondPlace.y}" r="6" style="--route-color:${b.color}"></circle>
+    <g transform="translate(${labelPoint.x} ${labelPoint.y})">
+      <rect class="route-label-bg" x="-54" y="-23" width="108" height="45" rx="5"></rect>
+      <text class="route-label-text" y="-3">${route.km} km</text>
+      <text class="route-label-sub" y="12">${route.sameRegion ? "LOCAL ROUTE" : "MAIN ROAD ROUTE"}</text>
     </g>
   `;
 }
@@ -477,13 +522,13 @@ function renderPlaceDistanceDetail(firstPlace, secondPlace) {
     .sort((x,y) => x.distance - y.distance).slice(0,4);
   detailContent.innerHTML = `
     <div class="detail-hero" style="--hero-color:${a.hero};background:linear-gradient(180deg,rgba(11,39,39,.06),rgba(10,35,36,.92)),linear-gradient(112deg,${a.hero},${b.hero})">
-      <div class="detail-hero__bar"><span class="detail-region"><i></i>地点测距 / POINT DISTANCE</span><span class="detail-status">直线距离</span></div>
+      <div class="detail-hero__bar"><span class="detail-region"><i></i>地点路线 / ROUTE</span><span class="detail-status">路线距离</span></div>
       <div class="distance-number"><strong>${km}</strong><span>公里 / KM</span></div>
       <p class="distance-hero-title">${firstPlace.name} → ${secondPlace.name}</p>
     </div>
     <div class="distance-summary">
       <p class="distance-summary__lead">${firstPlace.name}到${secondPlace.name}的距离为 ${km} 公里。</p>
-      <p class="distance-summary__copy">按两个地点在地图上的坐标计算，金色弧线标出两处地点的相对位置。</p>
+      <p class="distance-summary__copy">同一地区按两点路径计算；跨地区时沿澜海湾主干道计算，金色线路表示本次路线。</p>
       <div class="distance-regions">
         <div class="distance-region-card"><span class="distance-region-card__tag"><i style="--card-color:${a.color}"></i>${a.name} · 起点</span><h3>${firstPlace.name}</h3><p>${firstPlace.type} · ${factionFor(firstPlace).label}<br>${firstPlace.lead}</p></div>
         <div class="distance-region-card"><span class="distance-region-card__tag"><i style="--card-color:${b.color}"></i>${b.name} · 终点</span><h3>${secondPlace.name}</h3><p>${secondPlace.type} · ${factionFor(secondPlace).label}<br>${secondPlace.lead}</p></div>
@@ -517,7 +562,7 @@ function updateBreadcrumb() {
   if (state.selectedPlace && state.comparePlace) {
     const km = placeDistance(state.selectedPlace, state.comparePlace);
     mapBreadcrumb.textContent = `${state.selectedPlace.name} → ${state.comparePlace.name}`;
-    mapScale.textContent = `地点距离 ${km} km`;
+    mapScale.textContent = `路线距离 ${km} km`;
     mapCoordinate.textContent = "地点测距 · 02 点";
   } else if (state.selectedPlace) {
     const region = regionOf(state.selectedPlace.region);
