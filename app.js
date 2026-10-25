@@ -484,8 +484,10 @@ function snapCandidates(place) {
     }
   });
   candidates.sort((a,b)=>a.distance-b.distance);
-  const clear=candidates.filter(c=>!segmentCrossesWater(place,c));
-  return (clear.length ? clear : candidates).slice(0,12);
+  const nearestDistance = candidates[0]?.distance ?? 0;
+  const nearby = candidates.filter(c=>c.distance <= nearestDistance + 85);
+  const clear = nearby.filter(c=>!segmentCrossesWater(place,c));
+  return (clear.length ? clear : nearby).slice(0,8);
 }
 function shortestRoadPath(startSnap,endSnap) {
   const startKey="__route_start", endKey="__route_end";
