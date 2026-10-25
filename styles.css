@@ -308,8 +308,8 @@ button { -webkit-tap-highlight-color: transparent; }
 .poi__note-dot { position: absolute; top: -3px; right: -2px; width: 7px; height: 7px; border: 1.5px solid #f6eed8; border-radius: 50%; background: #d39a4f; box-shadow: 0 1px 4px rgba(22,42,37,.32); }
 
 .waterworks path { stroke-linejoin: round; }
-.lake-name { fill: #dbe8dc; font-family: "STSong","Songti SC","SimSun",serif; font-size: 12px; text-anchor: middle; opacity: .8; paint-order: stroke; stroke: rgba(40,85,83,.72); stroke-width: 2.5; }
-.channel-name { fill: #d7e2d7; font-family: "STSong","Songti SC","SimSun",serif; font-size: 9px; text-anchor: middle; opacity: .7; paint-order: stroke; stroke: rgba(29,70,73,.8); stroke-width: 2; }
+.lake-name { fill: #eef3e6; font-family: "STSong","Songti SC","SimSun",serif; font-size: 15px; font-weight: 700; text-anchor: middle; opacity: .96; paint-order: stroke; stroke: rgba(30,78,77,.88); stroke-width: 3; }
+.channel-name { fill: #dbe8dc; font-family: "STSong","Songti SC","SimSun",serif; font-size: 10px; font-weight: 700; text-anchor: middle; opacity: .86; paint-order: stroke; stroke: rgba(29,70,73,.86); stroke-width: 2.4; }
 .building-clusters rect, .building-clusters path:not([fill="none"]) { fill: #695b4d; opacity: .46; stroke: rgba(229,215,184,.58); stroke-width: .8; }
 .building-clusters path[fill="none"] { fill: none; stroke: #5d5044; stroke-width: 2; opacity: .42; }
 .l-civic rect { fill: #806c59; }.l-commercial rect { fill: #765545; }.j-market rect { fill: #826441; }.m-industry path:not([fill="none"]) { fill: #4d6660; }

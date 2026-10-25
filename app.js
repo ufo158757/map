@@ -53,7 +53,7 @@ const PLACES = [
   { id:"q-altar", region:"qinglan", name:"青岚祭坛", type:"遗迹", x:410, y:560, status:"遗址保护", tone:"limited", major:true,
     lead:"被苔藓覆盖的环形石台。", copy:"祭坛不朝向任何一座城市，而是正对春分日落的位置。地方志称这里曾有持续百年的潮声仪式，如今只余风穿过石缝的回响。", facts:[["建成","无法确认"],["保护级别","一级"]] },
   { id:"q-academy", region:"qinglan", name:"星源学院", type:"教育机构", x:510, y:340, status:"开放", tone:"open", major:true,
-    lead:"由星辰金融学院改制而来的诡秘研究学府，以“察天机，安人间”为宗旨。", copy:"学院没有显眼的校门，教室沿山道散布。最著名的圆顶观星室不对游客开放，但夏季会举办面向居民的天文夜谈。", facts:[["学系","7 个"],["观星夜","每季一次"]] },
+    lead:"星源学院，全称星辰溯源学院，前身为星辰金融学院，现为澜海湾顶级诡秘研究学府。", copy:"学院没有显眼的校门，教室沿山道散布。最著名的圆顶观星室不对游客开放，但夏季会举办面向居民的天文夜谈。", facts:[["学系","7 个"],["观星夜","每季一次"]] },
 
   { id:"l-city-hall", region:"lanzhou", name:"市政厅", type:"政务机构", x:900, y:385, status:"办公中", tone:"limited", major:true,
     lead:"澜海湾的最高行政中枢。", copy:"市政厅坐落在澜城正中心，三翼形立面分别朝向港口、学城与西侧山道。底层大厅陈列着四境统一时的海域勘界图。", facts:[["开放大厅","工作日"],["行政层级","市级"]] },
@@ -61,8 +61,8 @@ const PLACES = [
     lead:"苏氏五代的临湾庄园，现任族长苏思泽在此掌控家族产业。", copy:"庄园外墙由从金沙运来的浅色石材砌成，内部保留着完整的老式航海塔。苏氏后裔仍参与港务决策，但宅邸只在家族节庆时向外开放。", facts:[["建成","潮历 184 年"],["现任家主","苏闻澜"]] },
   { id:"l-commercial", region:"lanzhou", name:"沧澜商业区", type:"商业街区", x:1130, y:445, status:"全天开放", tone:"open", major:true,
     lead:"澜城最密集的商业与餐饮街。", copy:"从钱庄到海贸货栈，城市日常在这里换手。午后人流最盛，入夜后霓虹沿骑楼铺开，一直映到湖滨社区的方向。", facts:[["主要街道","5 条"],["夜市","至次日 01:00"]] },
-  { id:"l-lake-community", region:"lanzhou", name:"湖滨社区", type:"住宅社区", x:1180, y:375, status:"居民区", tone:"open",
-    lead:"围绕镜湖西南岸生长的旧社区。", copy:"住宅楼与低层院落混在一起，步行道直接通向湖畔。社区内保留着城市最早的一条公交支线和一间小小的水渠修配所。", facts:[["居民","约 1.8 万"],["社区中心","湖畔南楼"]] },
+  { id:"l-lake-community", region:"lanzhou", name:"湖滨社区", type:"贵族居住区", x:860, y:510, status:"居民区", tone:"open",
+    lead:"围绕镜湖东岸而建的贵族居住区，与旧城区和底层住宅保持明显边界。", copy:"住宅楼与低层院落混在一起，步行道直接通向湖畔。社区内保留着城市最早的一条公交支线和一间小小的水渠修配所。", facts:[["居民","约 1.8 万"],["社区中心","湖畔南楼"]] },
   { id:"l-hospital", region:"lanzhou", name:"澜海总医院", type:"医疗机构", x:830, y:370, status:"24 小时", tone:"open", major:true,
     lead:"覆盖四境的综合医疗中心。", copy:"总医院承担澜城大部分急诊，也与青岚的实验基地保持长期研究合作。主楼顶层设有一间不列入公开导览的潮汐病研究室。", facts:[["急诊","24 小时"],["床位","740"]] },
   { id:"l-psychiatric", region:"lanzhou", name:"康顺精神病院", type:"专科医院", x:880, y:490, status:"限制探访", tone:"limited",
@@ -81,8 +81,8 @@ const PLACES = [
     lead:"跨港贸易与旧式票据仍在此流转，背后与苏家金融网络关系密切。", copy:"钱庄仍在沿用刻印票据与电汇并行的旧制度。二层档案厅收藏着苏氏家族参与早期远洋贸易时留下的账簿。", facts:[["成立","潮历 189 年"],["营业","09:00—17:00"]] },
   { id:"l-enforcement", region:"lanzhou", name:"执法局", type:"治安机构", x:870, y:390, status:"在岗", tone:"limited",
     lead:"负责常规治安与近岸救援，对诡异灾害往往力不从心。", copy:"执法局负责城邦巡查、港口纠纷与近岸救援联络。正门旁的公告栏每日更新潮汛警示与失踪通报。", facts:[["辖区","澜城及近岸"],["值守","全天"]] },
-  { id:"l-reef-residences", region:"lanzhou", name:"暗礁住宅", type:"玩家复活点", x:1010, y:535, status:"初始复活点", spawn:true, tone:"open",
-    lead:"玩家初始复活点。旧填海区上的高层住宅，也是复苏后幸存者重新集结的地方。", copy:"住宅楼所在的位置原本是一片暗礁浅滩，填海后才建起第一批楼房。居民常抱怨夜里能听见海水在旧排水层里翻涌。", facts:[["楼栋","9 座"],["建成","潮历 223 年"]] },
+  { id:"l-reef-residences", region:"lanzhou", name:"暗礁住宅", type:"底层住宅", x:1010, y:535, status:"初始复活点", spawn:true, tone:"open",
+    lead:"填海区边缘拥挤破旧的底层住宅，也是玩家初始复活的地方。", copy:"住宅楼所在的位置原本是一片暗礁浅滩，填海后才建起第一批楼房。居民常抱怨夜里能听见海水在旧排水层里翻涌。", facts:[["楼栋","9 座"],["建成","潮历 223 年"]] },
   { id:"l-bus", region:"lanzhou", name:"火车站", type:"交通枢纽", x:1010, y:430, status:"运行中", tone:"open",
     lead:"四境铁路客运与换乘的汇合点。", copy:"总站有直达金沙港、鸣汐检查站与青岚学院的长线车。清晨首班车之前，站内会先亮起那条穿过整座城市的暖黄色顶灯。", facts:[["线路","18 条"],["首班","05:20"]] },
   { id:"l-telegraph", region:"lanzhou", name:"电报局", type:"通信机构", x:950, y:430, status:"24 小时", tone:"limited",
@@ -156,7 +156,7 @@ const FACTIONS = {
 const FACTION_GROUPS = {
   academy: new Set(["q-observatory","q-experiment-base","q-biopark","q-academy"]),
   city: new Set(["q-water-tower","q-nature-park","q-library","q-canal","q-sanatorium","l-city-hall","l-hospital","l-psychiatric","l-opera","l-welfare","l-eldercare","l-enforcement","l-bus","l-telegraph","l-court","j-clocktower","j-arena","j-dam","m-tide-museum","m-water","m-prison","m-training"]),
-  su: new Set(["l-su-estate","l-commercial","l-bank","l-apartment","j-deep-port","j-shipyard","j-pier","j-apartment","m-pharma"]),
+  su: new Set(["l-su-estate","l-commercial","l-bank","l-apartment","l-lake-community","j-deep-port","j-shipyard","j-pier","j-apartment","m-pharma"]),
   tide: new Set(["q-canal","l-restaurant","l-warehouse","j-safe-harbor","j-trade-center","j-resort","j-market","j-resort-district","m-workshop","m-drain","m-fisher"]),
   cult: new Set(["q-altar","m-reef","m-cave","m-cemetery","m-apartment"])
 };
@@ -234,7 +234,7 @@ function renderMarkers() {
     const hasNote = Boolean(placeNotes[place.id]?.text);
     const cls = ['poi', place.major ? 'is-major' : '', place.major && !place.apartment && !place.spawn ? 'is-landmark' : '', place.apartment ? 'is-apartment' : '', place.spawn ? 'is-spawn' : '', hasNote ? 'has-note' : ''].filter(Boolean).join(' ');
     return '<button class="' + cls + '" type="button" data-place-id="' + place.id + '" style="left:' + place.x + 'px;top:' + place.y + 'px;--poi-color:' + region.color + '" aria-label="' + region.name + ' · ' + place.name + '，' + place.type + '" title="' + region.name + ' · ' + place.name + '">' +
-      '<span class="poi__pin" aria-hidden="true"></span><span class="poi__label">' + place.name + '</span>' + (place.spawn ? '<span class="poi__spawn-badge">复活点</span>' : '') + (hasNote ? '<span class="poi__note-dot" title="已有笔记"></span>' : '') + '</button>';
+      '<span class="poi__pin" aria-hidden="true"></span><span class="poi__label">' + place.name + '</span>' + (hasNote ? '<span class="poi__note-dot" title="已有笔记"></span>' : '') + '</button>';
   }).join("");
   markerLayer.querySelectorAll(".poi").forEach(button => {
     button.addEventListener("pointerdown", event => event.stopPropagation());
